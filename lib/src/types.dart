@@ -1,3 +1,28 @@
+import 'dart:convert';
+
+Map<String, dynamic>? _safeMap(dynamic v) {
+  if (v == null) return null;
+  if (v is Map) return Map<String, dynamic>.from(v);
+  if (v is String) {
+    try {
+      final d = jsonDecode(v);
+      if (d is Map) return Map<String, dynamic>.from(d);
+    } catch (_) {}
+  }
+  return null;
+}
+
+String? _safeString(dynamic v) {
+  if (v == null) return null;
+  if (v is String) return v;
+  if (v is Map || v is List) {
+    try {
+      return jsonEncode(v);
+    } catch (_) {}
+  }
+  return v?.toString();
+}
+
 /// Network connection states
 enum NetworkState {
   connected('connected'),
@@ -303,7 +328,7 @@ class Content {
       ..type = json['type'] as String?
       ..encrypted = json['encrypted'] as bool? ?? false
       ..checksum = json['checksum'] as int? ?? 0
-      ..text = json['text'] as String?
+      ..text = _safeString(json['text'])
       ..placeholder = json['placeholder'] as String?
       ..thumbnail = json['thumbnail'] as String?
       ..duration = json['duration'] as String?
@@ -316,7 +341,7 @@ class Content {
           []
       ..replyId = json['replyId'] as String?
       ..replyContent = json['replyContent'] as String?
-      ..extra = json['extra'] as Map<String, dynamic>?
+      ..extra = _safeMap(json['extra'])
       ..unreadable = json['unreadable'] as bool? ?? false;
   }
 
@@ -510,8 +535,8 @@ class Conversation {
       ..mute = json['mute'] as bool? ?? false
       ..members = json['members'] as int? ?? 0
       ..tags = (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList()
-      ..extra = json['extra'] as Map<String, dynamic>?
-      ..topicExtra = json['topicExtra'] as Map<String, dynamic>?
+      ..extra = _safeMap(json['extra'])
+      ..topicExtra = _safeMap(json['topicExtra'])
       ..topicOwnerID = json['topicOwnerID'] as String?
       ..cachedAt = json['cachedAt'] != null
           ? DateTime.parse(json['cachedAt'] as String)
