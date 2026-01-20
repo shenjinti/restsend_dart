@@ -23,6 +23,27 @@ String? _safeString(dynamic v) {
   return v?.toString();
 }
 
+
+List<String>? _safeTags(dynamic v) {
+  if (v == null) return null;
+  if (v is List) {
+    return v.map((e) {
+      if (e is String) return e;
+      if (e is Map) {
+        // Try to extract label or name if available
+        if (e.containsKey('label')) return e['label'].toString();
+        if (e.containsKey('name')) return e['name'].toString();
+        // Fallback to json string
+        try {
+          return jsonEncode(e);
+        } catch (_) {}
+      }
+      return e.toString();
+    }).toList();
+  }
+  return null;
+}
+
 /// Network connection states
 enum NetworkState {
   connected('connected'),
@@ -329,9 +350,9 @@ class Content {
       ..encrypted = json['encrypted'] as bool? ?? false
       ..checksum = json['checksum'] as int? ?? 0
       ..text = _safeString(json['text'])
-      ..placeholder = json['placeholder'] as String?
-      ..thumbnail = json['thumbnail'] as String?
-      ..duration = json['duration'] as String?
+      ..placeholder = _safeString(json['placeholder'])
+      ..thumbnail = _safeString(json['thumbnail'])
+      ..duration = _safeString(json['duration'])
       ..size = json['size'] as int? ?? 0
       ..width = json['width'] as int? ?? 0
       ..height = json['height'] as int? ?? 0
@@ -340,7 +361,7 @@ class Content {
               .toList() ??
           []
       ..replyId = json['replyId'] as String?
-      ..replyContent = json['replyContent'] as String?
+      ..replyContent = _safeString(json['replyContent'])
       ..extra = _safeMap(json['extra'])
       ..unreadable = json['unreadable'] as bool? ?? false;
   }
@@ -511,7 +532,7 @@ class Conversation {
       ..multiple = json['multiple'] as bool? ?? false
       ..kind = json['kind'] as String?
       ..name = json['name'] as String?
-      ..remark = json['remark'] as String?
+      ..remark = _safeString(json['remark'])
       ..icon = json['icon'] as String?
       ..sticky = json['sticky'] as bool? ?? false
       ..unread = json['unread'] as int? ?? 0
@@ -522,7 +543,7 @@ class Conversation {
           ? DateTime.parse(json['lastMessageAt'] as String)
           : null
       ..lastMessageSeq = json['lastMessageSeq'] as int? ?? 0
-      ..lastSenderId = json['lastSenderId'] as String?
+      ..lastSenderId = _safeString(json['lastSenderId'])
       ..lastReadSeq = json['lastReadSeq'] as int? ?? 0
       ..lastReadAt = json['lastReadAt'] != null
           ? DateTime.parse(json['lastReadAt'] as String)
@@ -534,7 +555,7 @@ class Conversation {
           : null
       ..mute = json['mute'] as bool? ?? false
       ..members = json['members'] as int? ?? 0
-      ..tags = (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList()
+      ..tags = _safeTags(json['tags'])
       ..extra = _safeMap(json['extra'])
       ..topicExtra = _safeMap(json['topicExtra'])
       ..topicOwnerID = json['topicOwnerID'] as String?
