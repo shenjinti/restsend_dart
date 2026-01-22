@@ -141,7 +141,7 @@ class User {
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
-    return User(json['id'] as String)
+    return User(json['id'] as String? ?? '')
       ..name = json['name'] as String?
       ..avatar = json['avatar'] as String?
       ..publicKey = json['publicKey'] as String?

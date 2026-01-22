@@ -51,6 +51,11 @@ class ServicesApi {
     return resp;
   }
 
+  void setupAuthtoken(String email, String token)  {
+    authToken = token;
+    myId = email;
+  }
+
   /// Login with token
   Future<dynamic> loginWithToken(String email, String token) async {
     final resp = await backend.post(

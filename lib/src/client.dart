@@ -417,12 +417,14 @@ class Client extends Connection {
   Future<ChatRequest> sendText({
     required String topicId,
     required String text,
+    String? type,
     List<String>? mentions,
     String? reply,
   }) async {
     return await doSendText(
       topicId: topicId,
       text: text,
+      type: type,
       mentions: mentions,
       reply: reply,
     );

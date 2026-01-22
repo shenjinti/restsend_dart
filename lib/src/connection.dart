@@ -371,6 +371,7 @@ class Connection extends Callback {
   Future<ChatRequest> doSendText({
     required String topicId,
     required String text,
+    String? type,
     List<String>? mentions,
     String? reply,
     void Function(ChatLog?)? onsent,
@@ -383,7 +384,7 @@ class Connection extends Callback {
         ..chatId = randText(chatIdLength)
         ..topicId = topicId
         ..content = (Content()
-          ..type = 'text'
+          ..type = type ?? ChatContentType.text
           ..text = text
           ..mentions = mentions ?? []
           ..replyId = reply),
