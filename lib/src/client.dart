@@ -128,6 +128,12 @@ class Client extends Connection {
     return resp;
   }
 
+  /// setupAuthtoken
+  void setupAuthtoken(String email, String token) {
+     services.setupAuthtoken(email, token);
+  }
+
+
   /// Login with token
   Future<dynamic> loginWithToken({
     required String username,
