@@ -78,8 +78,16 @@ class Client extends Connection {
       return null;
     }
 
-    final conversation = Conversation.fromTopic(topic)..unread = 0;
-    onConversationUpdated?.call(conversation);
+    final conversation = await store.getConversation(topicId);
+    if (conversation != null) {
+      if (senderId == myId) {
+        conversation.unread = 0;
+        if (req.seq > conversation.lastReadSeq) {
+          conversation.lastReadSeq = req.seq;
+        }
+      }
+      onConversationUpdated?.call(conversation);
+    }
     return null;
   }
 
@@ -98,6 +106,16 @@ class Client extends Connection {
       ..updatedAt = DateTime.now();
 
     store.updateMessages([logItem]);
+
+    getTopic(req.topicId!).then((topic) {
+      if (topic != null) {
+        final conversation = this.store.processIncoming(topic, logItem, false);
+        if (conversation != null) {
+          onConversationUpdated?.call(conversation);
+        }
+      }
+    });
+
     return logItem;
   }
 

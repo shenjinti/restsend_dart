@@ -222,7 +222,7 @@ class ClientStore {
   Conversation? processIncoming(Topic topic, ChatLog logItem, bool hasRead) {
     topic.lastSeq = logItem.seq > topic.lastSeq ? logItem.seq : topic.lastSeq;
 
-    if (logItem.seq == 0 || logItem.chatId == null) {
+    if (logItem.chatId == null) {
       return null;
     }
 
@@ -290,6 +290,13 @@ class ClientStore {
       conversation.unread = prevConversation.unread;
       conversation.lastReadSeq = prevConversation.lastReadSeq;
       conversation.lastReadAt = prevConversation.lastReadAt;
+      conversation.sticky = prevConversation.sticky;
+      conversation.tags = prevConversation.tags;
+      conversation.extra = prevConversation.extra;
+      conversation.lastMessage = prevConversation.lastMessage;
+      conversation.lastMessageAt = prevConversation.lastMessageAt;
+      conversation.lastMessageSeq = prevConversation.lastMessageSeq;
+      conversation.lastSenderId = prevConversation.lastSenderId;
     }
 
     switch (content?.type) {

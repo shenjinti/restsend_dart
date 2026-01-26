@@ -506,11 +506,11 @@ class Conversation {
       ..cachedAt = topic.cachedAt;
 
     if (logItem != null && logItem.readable) {
-      conv.lastSenderId = logItem.senderId;
-      conv.lastMessage = logItem.content;
-      conv.lastMessageAt = logItem.createdAt;
-      conv.lastMessageSeq = logItem.seq;
       if (logItem.seq > conv.lastSeq) {
+        conv.lastSenderId = logItem.senderId;
+        conv.lastMessage = logItem.content;
+        conv.lastMessageAt = logItem.createdAt;
+        conv.lastMessageSeq = logItem.seq;
         conv.lastSeq = logItem.seq;
       }
     }
