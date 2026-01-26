@@ -483,6 +483,7 @@ class Conversation {
   Map<String, dynamic>? extra;
   Map<String, dynamic>? topicExtra;
   String? topicOwnerID;
+  DateTime? topicCreatedAt;
   DateTime? cachedAt;
   User? lastMessageSender;
 
@@ -503,7 +504,9 @@ class Conversation {
       ..lastSeq = topic.lastSeq
       ..lastReadSeq = topic.lastReadSeq
       ..updatedAt = topic.updatedAt
-      ..cachedAt = topic.cachedAt;
+      ..cachedAt = topic.cachedAt
+      ..topicOwnerID = topic.ownerId
+      ..topicCreatedAt = topic.createdAt;
 
     if (logItem != null && logItem.readable) {
       if (logItem.seq > conv.lastSeq) {
@@ -558,7 +561,10 @@ class Conversation {
       ..tags = _safeTags(json['tags'])
       ..extra = _safeMap(json['extra'])
       ..topicExtra = _safeMap(json['topicExtra'])
-      ..topicOwnerID = json['topicOwnerID'] as String?
+      ..topicOwnerID = json['topicOwnerID'] as String? ?? json['topicOwnerId'] as String?
+      ..topicCreatedAt = json['topicCreatedAt'] != null
+          ? DateTime.parse(json['topicCreatedAt'] as String)
+          : null
       ..cachedAt = json['cachedAt'] != null
           ? DateTime.parse(json['cachedAt'] as String)
           : null;
@@ -591,6 +597,7 @@ class Conversation {
       'extra': extra,
       'topicExtra': topicExtra,
       'topicOwnerID': topicOwnerID,
+      'topicCreatedAt': topicCreatedAt?.toIso8601String(),
       'cachedAt': cachedAt?.toIso8601String(),
     };
   }
