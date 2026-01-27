@@ -189,6 +189,8 @@ class Connection extends Callback {
         if (req.chatId != null && req.type != 'resp') {
           sendResponse(req.chatId!, code ?? 200);
         }
+      }).catchError((e) {
+        logger.severe('Error handling request ${req.type}: $e');
       });
     } catch (e) {
       logger.severe('Error handling message: $e');

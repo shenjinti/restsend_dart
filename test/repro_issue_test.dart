@@ -6,7 +6,7 @@ import 'dart:async';
 void main() {
   group('Reproduction of onConversationUpdated issue', () {
     test('Verify onConversationUpdated is called for regular chat messages', () async {
-      final client = Client('https://api.test.com');
+      final client = Client('https://chat.ruzhila.cn');
       
       const topicId = 'topic_1';
       const senderId = 'user_2';
@@ -41,7 +41,7 @@ void main() {
     });
 
     test('Verify onConversationUpdated for seq=0 messages', () async {
-      final client = Client('https://api.test.com');
+      final client = Client('https://chat.ruzhila.cn');
       
       const topicId = 'topic_1';
       const senderId = 'user_2';
@@ -72,7 +72,7 @@ void main() {
     });
 
     test('Verify onConversationUpdated for already cached conversation with new message', () async {
-      final client = Client('https://api.test.com');
+      final client = Client('https://chat.ruzhila.cn');
       
       const topicId = 'topic_1';
       const senderId = 'user_2';
@@ -110,7 +110,7 @@ void main() {
     });
 
     test('Verify onConversationUpdated maintains lastMessage for old messages', () async {
-      final client = Client('https://api.test.com');
+      final client = Client('https://chat.ruzhila.cn');
       
       const topicId = 'topic_1';
       const senderId = 'user_2';

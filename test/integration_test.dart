@@ -4,13 +4,13 @@ import 'package:restsend_dart/restsend_dart.dart';
 void main() {
   group('Connection Tests', () {
     test('Connection initialization', () {
-      final conn = Connection('https://api.test.com');
-      expect(conn.endpoint, 'wss://api.test.com');
+      final conn = Connection('https://chat.ruzhila.cn');
+      expect(conn.endpoint, 'wss://chat.ruzhila.cn');
       expect(conn.networkState, 'disconnected');
     });
 
     test('Message handlers setup', () {
-      final conn = Connection('https://api.test.com');
+      final conn = Connection('https://chat.ruzhila.cn');
       
       expect(conn.handlers.containsKey('nop'), true);
       expect(conn.handlers.containsKey('ping'), true);
@@ -19,7 +19,7 @@ void main() {
     });
 
     test('ChatRequest creation for text', () {
-      final conn = Connection('https://api.test.com');
+      final conn = Connection('https://chat.ruzhila.cn');
       
       // This would normally send, but we're just testing the structure
       expect(() {
@@ -79,16 +79,16 @@ void main() {
 
   group('Client Tests', () {
     test('Client initialization', () {
-      final client = Client('https://api.test.com');
+      final client = Client('https://chat.ruzhila.cn');
       
-      expect(client.endpoint, 'wss://api.test.com');
+      expect(client.endpoint, 'wss://chat.ruzhila.cn');
       expect(client.services, isNotNull);
       expect(client.store, isNotNull);
       expect(client.myId, isEmpty);
     });
 
     test('Client message handlers', () {
-      final client = Client('https://api.test.com');
+      final client = Client('https://chat.ruzhila.cn');
       
       expect(client.handlers.containsKey('typing'), true);
       expect(client.handlers.containsKey('chat'), true);
@@ -96,7 +96,7 @@ void main() {
     });
 
     test('Store integration', () {
-      final client = Client('https://api.test.com');
+      final client = Client('https://chat.ruzhila.cn');
       
       final msgStore = client.store.getMessageStore('topic123');
       expect(msgStore, isNotNull);
@@ -106,15 +106,15 @@ void main() {
 
   group('Services API Tests', () {
     test('ServicesApi initialization', () {
-      final services = ServicesApi('https://api.test.com');
+      final services = ServicesApi('https://chat.ruzhila.cn');
       
-      expect(services.endpoint, 'https://api.test.com');
+      expect(services.endpoint, 'https://chat.ruzhila.cn');
       expect(services.myId, isNull);
       expect(services.authToken, isNull);
     });
 
     test('Backend API integration', () {
-      final services = ServicesApi('https://api.test.com');
+      final services = ServicesApi('https://chat.ruzhila.cn');
       services.authToken = 'test-token';
       
       final backend = services.backend;

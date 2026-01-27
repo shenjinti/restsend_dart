@@ -107,7 +107,7 @@ void main() {
     late ClientStore store;
 
     setUp(() {
-      services = ServicesApi('https://api.test.com');
+      services = ServicesApi('https://chat.ruzhila.cn');
       services.myId = 'testuser';
       store = ClientStore(services);
     });
@@ -180,7 +180,7 @@ void main() {
     late ClientStore store;
 
     setUp(() {
-      services = ServicesApi('https://api.test.com');
+      services = ServicesApi('https://chat.ruzhila.cn');
       services.authToken = 'test_token';
       services.myId = 'testuser';
       store = ClientStore(services);
